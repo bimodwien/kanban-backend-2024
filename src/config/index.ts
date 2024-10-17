@@ -1,14 +1,11 @@
-import { config } from "dotenv";
-import { resolve } from "path";
+"use strict";
 
-export const NODE_ENV = process.env.NODE_ENV || "development";
+import { CorsOptions } from "cors";
+import "dotenv/config";
 
-const envFile = NODE_ENV === "development" ? ".env.development" : ".env";
+export const corsOption: CorsOptions = {
+  origin: "http://localhost:3000",
+  credentials: true,
+};
 
-config({ path: resolve(__dirname, `../${envFile}`) });
-config({ path: resolve(__dirname, `../${envFile}.local`), override: true });
-
-// Load all environment variables from .env file
-
-export const PORT = process.env.PORT || 8000;
-export const DATABASE_URL = process.env.DATABASE_URL || "";
+export const SECRET_KEY = process.env.SECRET_KEY || "rahasia";
