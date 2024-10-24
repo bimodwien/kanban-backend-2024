@@ -9,8 +9,16 @@ export class UserController {
       const { access_token, refresh_token } = await UserService.login(req);
       res
         .status(200)
-        .cookie("access_token", access_token)
-        .cookie("refresh_token", refresh_token)
+        .cookie("access_token", access_token, {
+          httpOnly: true,
+          sameSite: "none",
+          secure: true,
+        })
+        .cookie("refresh_token", refresh_token, {
+          httpOnly: true,
+          sameSite: "none",
+          secure: true,
+        })
         .json({
           message: "login success",
           access_token: access_token,
