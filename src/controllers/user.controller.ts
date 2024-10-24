@@ -6,7 +6,9 @@ import { Request, Response, NextFunction } from "express";
 export class UserController {
   async login(req: Request, res: Response, next: NextFunction) {
     try {
-      const { access_token, refresh_token } = await UserService.login(req);
+      const { user, access_token, refresh_token } = await UserService.login(
+        req
+      );
       res
         .status(200)
         .cookie("access_token", access_token, {
@@ -21,8 +23,7 @@ export class UserController {
         })
         .json({
           message: "login success",
-          access_token: access_token,
-          refresh_token: refresh_token,
+          user,
         });
     } catch (error) {
       next(error);

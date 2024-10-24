@@ -53,11 +53,9 @@ class UserService {
     })) as TUser;
 
     if (!user) throw new AppError("User tidak ditemukan", 404);
-
     if (!user.password) throw new AppError("Password tidak ditemukan", 400);
 
     const checkPassword = await comparePassword(user.password, password);
-
     if (!checkPassword) throw new AppError("Wrong Password", 401);
 
     delete user.password;
@@ -65,7 +63,7 @@ class UserService {
     const access_token = createToken({ user, type: "access_token" }, "10hr");
     const refresh_token = createToken({ user, type: "refresh_token" }, "24hr");
 
-    return { access_token, refresh_token };
+    return { user, access_token, refresh_token };
   }
 }
 
