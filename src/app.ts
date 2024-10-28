@@ -10,6 +10,7 @@ import express, {
 import cors from "cors";
 import { PORT } from "./config";
 import { corsOption } from "./config/index";
+import cookieParser from "cookie-parser";
 import { UserRouter } from "./routes/user.route";
 import { TodoRouter } from "./routes/todo.route";
 
@@ -27,6 +28,7 @@ export default class App {
     this.app.use(cors(corsOption));
     this.app.use(json());
     this.app.use(urlencoded({ extended: true }));
+    this.app.use(cookieParser());
   }
 
   private handleError(): void {

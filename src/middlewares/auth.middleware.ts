@@ -9,7 +9,7 @@ export const validateToken = (
   next: NextFunction
 ) => {
   try {
-    const token = req.headers.authorization?.replace("Bearer ", "") || "";
+    const token = req.cookies.access_token;
     const decode = verify(token!, SECRET_KEY) as TDecode;
     if (decode.type != "access_token") throw new Error("Invalid Access Token");
     req.user = decode.user;
@@ -25,7 +25,7 @@ export const validateRefreshToken = (
   next: NextFunction
 ) => {
   try {
-    const token = req.headers.authorization?.replace("Bearer ", "") || "";
+    const token = req.cookies.access_token;
     const decode = verify(token!, SECRET_KEY) as TDecode;
     if (decode.type !== "refresh_token")
       throw new Error("Invalid Refresh Token");
