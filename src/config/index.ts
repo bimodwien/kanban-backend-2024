@@ -4,7 +4,7 @@ import { CorsOptions } from "cors";
 import "dotenv/config";
 
 export const corsOption: CorsOptions = {
-  origin: process.env.URL_CORS || "http://localhost:3000",
+  origin: "https://kanban-bimo.vercel.app",
   credentials: true,
 };
 
