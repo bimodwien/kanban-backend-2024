@@ -1,5 +1,6 @@
 import { UserController } from "@/controllers/user.controller";
 import { Router } from "express";
+import { validateToken } from "@/middlewares/auth.middleware";
 
 export class UserRouter {
   private router: Router;
@@ -14,6 +15,11 @@ export class UserRouter {
   private initializeRoutes(): void {
     this.router.post("/login", this.userController.login);
     this.router.post("/register", this.userController.register);
+    this.router.get(
+      "/keep-login",
+      validateToken,
+      this.userController.keepLogin
+    );
   }
 
   getRouter(): Router {

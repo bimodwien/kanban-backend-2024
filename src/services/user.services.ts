@@ -1,7 +1,9 @@
 "use strict";
 import { Request } from "express";
 import prisma from "@/prisma";
-import { TUser } from "@/models/user";
+import { TUser, TDecode } from "@/models/user";
+import { verify } from "jsonwebtoken";
+import { SECRET_KEY } from "@/config/index";
 import { hashPassword, comparePassword } from "@/libs/bcrypt";
 import { createToken } from "../libs/jwt";
 import { Prisma } from "@prisma/client";
@@ -64,6 +66,35 @@ class UserService {
     const refresh_token = createToken({ user, type: "refresh_token" }, "24hr");
 
     return { user, access_token, refresh_token };
+  }
+
+  static async keepLogin(req: Request) {
+    const token = req.cookies.access_token;
+    if (!token) {
+      throw new Error("Access Token not found");
+    }
+    try {
+      const decode = verify(token, SECRET_KEY) as TDecode;
+      if (decode.type !== "access_token") {
+        throw new Error("Invalid Access Token");
+      }
+      const userFromToken = decode.user;
+      const user = await prisma.user.findUnique({
+        where: {
+          id: userFromToken.id,
+        },
+        select: {
+          id: true,
+          username: true,
+          fullName: true,
+          email: true,
+        },
+      });
+      if (!user) throw new Error("User not found");
+      return { user };
+    } catch (error) {
+      throw error;
+    }
   }
 }
 

@@ -40,4 +40,16 @@ export class UserController {
       next(error);
     }
   }
+
+  async keepLogin(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { user } = await UserService.keepLogin(req);
+      res.status(200).json({
+        message: "keep login success",
+        user,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }
