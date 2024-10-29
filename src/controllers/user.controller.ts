@@ -30,6 +30,26 @@ export class UserController {
     }
   }
 
+  async logout(req: Request, res: Response, next: NextFunction) {
+    try {
+      res
+        .status(200)
+        .clearCookie("access_token", {
+          httpOnly: true,
+          sameSite: "none",
+          secure: true,
+        })
+        .clearCookie("refresh_token", {
+          httpOnly: true,
+          sameSite: "none",
+          secure: true,
+        })
+        .json({ message: "logout success" });
+    } catch (error) {
+      next(error);
+    }
+  }
+
   async register(req: Request, res: Response, next: NextFunction) {
     try {
       const data = await UserService.register(req);

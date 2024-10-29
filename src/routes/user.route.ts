@@ -20,6 +20,7 @@ export class UserRouter {
       validateToken,
       this.userController.keepLogin
     );
+    this.router.post("/logout", this.userController.logout);
   }
 
   getRouter(): Router {
