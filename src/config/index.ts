@@ -4,7 +4,7 @@ import { CorsOptions } from "cors";
 import "dotenv/config";
 
 export const corsOption: CorsOptions = {
-  origin: "http://localhost:3000",
+  origin: process.env.URL_CORS || "http://localhost:3000",
   credentials: true,
 };
 
